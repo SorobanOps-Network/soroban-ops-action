@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   profile-gas-footprint:
     runs-on: ubuntu-latest
