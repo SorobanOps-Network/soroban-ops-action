@@ -1,0 +1,13 @@
+name: 'Soroban-Ops Gas Profiler'
+description: 'Automatically profiles Soroban smart contract resource metrics and reports deltas on Pull Requests.'
+author: 'SorobanOps Network'
+inputs:
+  github-token:
+    description: 'The GITHUB_TOKEN secret required to post markdown comments back to the PR.'
+    required: true
+  soroban-simulation-logs:
+    description: 'Raw stdout logs captured from the Soroban CLI simulation invocation.'
+    required: false
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

@@ -1,0 +1,47 @@
+name: Soroban-Ops Automated Contract Performance CI
+
+on:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  profile-gas-footprint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Initialize Rust Toolchain Envs
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Setup Node.js Build Engine Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Runtime Build Requirements
+        run: npm ci
+
+      - name: Boot Standalone Soroban Infrastructure Node Network
+        run: |
+          docker-compose -f docker/docker-compose.standalone.yml up -d
+          echo "Awaiting internal node lifecycle synchronization states loops verification..."
+          sleep 15
+
+      - name: Execute Workspace Smart Contracts Compilations Verification
+        run: cargo build --target wasm32-unknown-unknown --release
+
+      - name: Compile Pipeline Profiling Packages
+        run: npm run build
+
+      - name: Run Test Verification Pipelines Suites
+        run: npm run test
+
+      - name: Run Profile Analyzer Reporting Runner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node dist/index.js
