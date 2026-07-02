@@ -32,7 +32,7 @@ jobs:
 
       - name: Boot Standalone Soroban Infrastructure Node Network
         run: |
-          docker-compose -f docker/docker-compose.standalone.yml up -d
+          docker compose -f docker/docker-compose.standalone.yml up -d
           echo "Awaiting internal node lifecycle synchronization states loops verification..."
           sleep 15
 
