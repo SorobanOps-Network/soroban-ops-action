@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  stellar-standalone:
+    image: stellar/quickstart:latest
+    container_name: soroban_ops_node
+    command: ["--standalone", "--enable-soroban-rpc"]
+    ports:
+      - "8000:8000"
+    environment:
+      - NETWORK=standalone
+    volumes:
+      - stellar-data:/opt/stellar
+    healthcheck:
+      test: ["CMD", "curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getNetwork\"}", "http://localhost:8000/soroban/rpc"]
+      interval: 5s
+      timeout: 4s
+      retries: 10
+
+volumes:
+  stellar-data:
