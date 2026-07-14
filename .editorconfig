@@ -1,0 +1,19 @@
+# top-most EditorConfig file
+root = true
+
+# Global settings for all files
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Web & Config languages (2 spaces)
+[*.{ts,js,json,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# Rust language (4 spaces)
+[*.rs]
+indent_style = space
+indent_size = 4
