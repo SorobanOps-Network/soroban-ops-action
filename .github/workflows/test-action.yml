@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Initialize Rust Toolchain Envs
         uses: dtolnay/rust-toolchain@stable
