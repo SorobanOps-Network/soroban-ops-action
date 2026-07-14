@@ -2,8 +2,8 @@
 
 <div align="center">
 
-[![CI Build Status](https://img.shields.io/github/actions/workflow/status/Code-Paragon/soroban-ops-action/test-action.yml?branch=main&style=flat-square&label=Build%20Status)](https://github.com/Code-Paragon/soroban-ops-action/actions/workflows/test-action.yml)
-[![Version](https://img.shields.io/github/package-json/v/Code-Paragon/soroban-ops-action?style=flat-square&color=blue)](https://github.com/Code-Paragon/soroban-ops-action)
+[![CI Build Status](https://img.shields.io/github/actions/workflow/status/SorobanOps-Network/soroban-ops-action/test-action.yml?branch=main&style=flat-square&label=Build%20Status)](https://github.com/SorobanOps-Network/soroban-ops-action/actions/workflows/test-action.yml)
+[![Version](https://img.shields.io/github/package-json/v/SorobanOps-Network/soroban-ops-action?style=flat-square&color=blue)](https://github.com/SorobanOps-Network/soroban-ops-action)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 </div>
