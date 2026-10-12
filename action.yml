@@ -8,6 +8,13 @@ inputs:
   soroban-simulation-logs:
     description: 'Raw stdout logs captured from the Soroban CLI simulation invocation.'
     required: false
+  json-report-path:
+    description: 'File path where structured metrics JSON report should be exported.'
+    required: false
+    default: 'soroban-gas-report.json'
+outputs:
+  report-json-path:
+    description: 'The absolute file path of the generated JSON gas report artifact.'
 runs:
   using: 'node20'
   main: 'dist/index.js'

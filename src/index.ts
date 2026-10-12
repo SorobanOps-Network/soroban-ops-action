@@ -1,10 +1,12 @@
 import * as core from '@actions/core';
 import { GasParser, GasMetrics } from './parser/gasParser';
 import { CommentReporter } from './github/commentReporter';
+import { GasExporter } from './exporter';
 
 async function executePipelineRunner() {
   try {
     const githubToken = core.getInput('github-token') || process.env.GITHUB_TOKEN || "";
+    const jsonReportPath = core.getInput('json-report-path') || 'soroban-gas-report.json';
 
     // Simulating Soroban execution tracing pipelines payload
     const simulatedStdoutLogs = `
@@ -25,6 +27,9 @@ async function executePipelineRunner() {
     core.info("Initializing extraction parser sequence engines...");
     const currentMetrics = GasParser.parseSimulationOutput(simulatedStdoutLogs);
     const analysisReport = GasParser.calculateDeltas(currentMetrics, baselineMockMetrics);
+
+    core.info("Exporting structured telemetry JSON report...");
+    GasExporter.exportReport(currentMetrics, baselineMockMetrics, analysisReport, jsonReportPath);
 
     core.info("Compiling output matrix into Markdown template presentation structures...");
     const markdownPayload = CommentReporter.generateMarkdownTable(analysisReport);
