@@ -8,6 +8,10 @@ inputs:
   soroban-simulation-logs:
     description: 'Raw stdout logs captured from the Soroban CLI simulation invocation.'
     required: false
+  report_title:
+    description: 'Custom markdown header for the PR comment report.'
+    required: false
+    default: 'Soroban Smart Contract Gas & Resource Impact Report'
 runs:
   using: 'node20'
   main: 'dist/index.js'
