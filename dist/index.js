@@ -36,9 +36,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(require("@actions/core"));
 const gasParser_1 = require("./parser/gasParser");
 const commentReporter_1 = require("./github/commentReporter");
+const exporter_1 = require("./exporter");
+const analyzer_1 = require("./analyzer");
 async function executePipelineRunner() {
     try {
         const githubToken = core.getInput('github-token') || process.env.GITHUB_TOKEN || "";
+        const jsonReportPath = core.getInput('json-report-path') || 'soroban-gas-report.json';
+        const maxCpuInput = core.getInput('max_cpu_increase_percent') || core.getInput('max-cpu-increase-percent');
+        const maxMemInput = core.getInput('max_mem_increase_percent') || core.getInput('max-mem-increase-percent');
         // Simulating Soroban execution tracing pipelines payload
         const simulatedStdoutLogs = `
       Simulating invocation transaction footprint execution metrics:
@@ -56,6 +61,8 @@ async function executePipelineRunner() {
         core.info("Initializing extraction parser sequence engines...");
         const currentMetrics = gasParser_1.GasParser.parseSimulationOutput(simulatedStdoutLogs);
         const analysisReport = gasParser_1.GasParser.calculateDeltas(currentMetrics, baselineMockMetrics);
+        core.info("Exporting structured telemetry JSON report...");
+        exporter_1.GasExporter.exportReport(currentMetrics, baselineMockMetrics, analysisReport, jsonReportPath);
         core.info("Compiling output matrix into Markdown template presentation structures...");
         const reportTitle = core.getInput('report_title') || "Soroban Smart Contract Gas & Resource Impact Report";
         const markdownPayload = commentReporter_1.CommentReporter.generateMarkdownTable(analysisReport, reportTitle);
@@ -66,6 +73,12 @@ async function executePipelineRunner() {
             core.warning("Execution framework isolated missing authentication keys context. Displaying output locally:");
             console.log(markdownPayload);
         }
+        core.info("Evaluating resource budget failure thresholds...");
+        const thresholds = {
+            maxCpuIncreasePercent: analyzer_1.BudgetAnalyzer.parseThreshold(maxCpuInput),
+            maxMemIncreasePercent: analyzer_1.BudgetAnalyzer.parseThreshold(maxMemInput)
+        };
+        analyzer_1.BudgetAnalyzer.enforce(analysisReport, thresholds);
     }
     catch (err) {
         core.setFailed(`Runner initialization caught unexpected execution exception: ${err.message}`);

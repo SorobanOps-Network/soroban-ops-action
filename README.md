@@ -33,9 +33,17 @@ steps:
     
 - name: Run Profile Analyzer Reporting Action
   # Invoke our custom action repository cleanly as a native extension dependency
+  id: soroban-gas
   uses: SorobanOps-Network/soroban-ops-action@v1
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
+
+- name: Upload Gas Report Artifact
+  # Chain upload-artifact to persist the exported JSON telemetry report
+  uses: actions/upload-artifact@v4
+  with:
+    name: soroban-gas-report
+    path: ${{ steps.soroban-gas.outputs.report-json-path }}
 ```
 
 ## Quickstart Setup Checklist
