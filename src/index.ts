@@ -2,11 +2,14 @@ import * as core from '@actions/core';
 import { GasParser, GasMetrics } from './parser/gasParser';
 import { CommentReporter } from './github/commentReporter';
 import { GasExporter } from './exporter';
+import { BudgetAnalyzer } from './analyzer';
 
 async function executePipelineRunner() {
   try {
     const githubToken = core.getInput('github-token') || process.env.GITHUB_TOKEN || "";
     const jsonReportPath = core.getInput('json-report-path') || 'soroban-gas-report.json';
+    const maxCpuInput = core.getInput('max_cpu_increase_percent') || core.getInput('max-cpu-increase-percent');
+    const maxMemInput = core.getInput('max_mem_increase_percent') || core.getInput('max-mem-increase-percent');
 
     // Simulating Soroban execution tracing pipelines payload
     const simulatedStdoutLogs = `
@@ -40,6 +43,13 @@ async function executePipelineRunner() {
       core.warning("Execution framework isolated missing authentication keys context. Displaying output locally:");
       console.log(markdownPayload);
     }
+
+    core.info("Evaluating resource budget failure thresholds...");
+    const thresholds = {
+      maxCpuIncreasePercent: BudgetAnalyzer.parseThreshold(maxCpuInput),
+      maxMemIncreasePercent: BudgetAnalyzer.parseThreshold(maxMemInput)
+    };
+    BudgetAnalyzer.enforce(analysisReport, thresholds);
   } catch (err: any) {
     core.setFailed(`Runner initialization caught unexpected execution exception: ${err.message}`);
   }

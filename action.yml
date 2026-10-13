@@ -12,6 +12,12 @@ inputs:
     description: 'File path where structured metrics JSON report should be exported.'
     required: false
     default: 'soroban-gas-report.json'
+  max_cpu_increase_percent:
+    description: 'Maximum allowable percentage increase in CPU Instructions before failing CI.'
+    required: false
+  max_mem_increase_percent:
+    description: 'Maximum allowable percentage increase in Memory Bytes before failing CI.'
+    required: false
 outputs:
   report-json-path:
     description: 'The absolute file path of the generated JSON gas report artifact.'
