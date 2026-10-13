@@ -64,7 +64,8 @@ async function executePipelineRunner() {
         core.info("Exporting structured telemetry JSON report...");
         exporter_1.GasExporter.exportReport(currentMetrics, baselineMockMetrics, analysisReport, jsonReportPath);
         core.info("Compiling output matrix into Markdown template presentation structures...");
-        const markdownPayload = commentReporter_1.CommentReporter.generateMarkdownTable(analysisReport);
+        const reportTitle = core.getInput('report_title') || "Soroban Smart Contract Gas & Resource Impact Report";
+        const markdownPayload = commentReporter_1.CommentReporter.generateMarkdownTable(analysisReport, reportTitle);
         if (githubToken) {
             await commentReporter_1.CommentReporter.postPullRequestComment(markdownPayload, githubToken);
         }

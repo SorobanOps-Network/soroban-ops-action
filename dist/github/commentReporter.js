@@ -37,8 +37,8 @@ exports.CommentReporter = void 0;
 const core = __importStar(require("@actions/core"));
 const github = __importStar(require("@actions/github"));
 class CommentReporter {
-    static generateMarkdownTable(analysis) {
-        let markdown = `### 📊 Soroban Smart Contract Gas & Resource Impact Report\n\n`;
+    static generateMarkdownTable(analysis, reportTitle = "Soroban Smart Contract Gas & Resource Impact Report") {
+        let markdown = `### ${reportTitle}\n\n`;
         markdown += `| Resource Metric | Baseline Value | Current PR Value | Absolute Delta | Percentage Shift |\n`;
         markdown += `| :--- | :---: | :---: | :---: | :---: |\n`;
         // TODO: [Drips Wave - Formatting Improvements] Add a status column showing a green check emoji for reductions and a red warning flag for regressions.
