@@ -2,8 +2,11 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 
 export class CommentReporter {
-public static generateMarkdownTable(analysis: Record<string, { current: number; baseline: number; delta: number; percent: string }>): string {
-    let markdown = `### Soroban Smart Contract Gas & Resource Impact Report\n\n`;
+  public static generateMarkdownTable(
+    analysis: Record<string, { current: number; baseline: number; delta: number; percent: string }>,
+    reportTitle: string = "Soroban Smart Contract Gas & Resource Impact Report"
+  ): string {
+    let markdown = `### ${reportTitle}\n\n`;
     markdown += `| Resource Metric | Baseline Value | Current PR Value | Absolute Delta | Percentage Shift |\n`;
     markdown += `| :--- | :---: | :---: | :---: | :---: |\n`;
 
