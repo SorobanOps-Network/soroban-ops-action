@@ -10,4 +10,13 @@ describe('CommentReporter Presentation Tests Suite', () => {
     expect(outputString).toContain("| **CPU INSTRUCTIONS** | 100 | 150 | +50 | 50.00% |");
     expect(outputString).toContain("### Soroban Smart Contract Gas & Resource Impact Report");
   });
+
+  test('Should allow overriding markdown header with custom reportTitle', () => {
+    const simulatedAnalysis = {
+      cpuInstructions: { current: 150, baseline: 100, delta: 50, percent: "50.00%" }
+    };
+
+    const outputString = CommentReporter.generateMarkdownTable(simulatedAnalysis, "DeFi Swap Contract Gas Report");
+    expect(outputString).toContain("### DeFi Swap Contract Gas Report");
+  });
 });

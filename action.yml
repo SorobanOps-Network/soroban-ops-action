@@ -1,13 +1,18 @@
-name: 'Soroban-Ops Gas Profiler'
-description: 'Automatically profiles Soroban smart contract resource metrics and reports deltas on Pull Requests.'
+name: 'Soroban Resource & Gas Reporter'
+description: 'Analyzes Soroban contract execution simulations and comments gas / resource breakdowns on PRs.'
 author: 'SorobanOps Network'
 inputs:
   github-token:
-    description: 'The GITHUB_TOKEN secret required to post markdown comments back to the PR.'
-    required: true
+    description: 'GitHub Token used to post PR comments.'
+    required: false
+    default: ${{ github.token }}
   soroban-simulation-logs:
     description: 'Raw stdout logs captured from the Soroban CLI simulation invocation.'
     required: false
+  report_title:
+    description: 'Custom markdown header for the PR comment report.'
+    required: false
+    default: 'Soroban Smart Contract Gas & Resource Impact Report'
   json-report-path:
     description: 'File path where structured metrics JSON report should be exported.'
     required: false
